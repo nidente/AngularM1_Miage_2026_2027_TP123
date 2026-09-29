@@ -1,0 +1,130 @@
+:host { display: grid; place-items: center; min-height: calc(100dvh - 16.25rem); }
+
+.shell {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  width: 100%;
+  max-width: 66rem;
+  min-height: 35rem;
+  overflow: hidden;
+  background: white;
+  border-radius: 1.5rem;
+  box-shadow: 0 30px 70px #0a1f1a2e, 0 0 0 1px #0a1f1a0d;
+  animation: shell-in 0.45s ease-out;
+}
+
+/* ---------- Panneau gauche : façade tolex + manche de guitare ---------- */
+.stage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.75rem;
+  padding: 2.75rem 0;
+  color: var(--on-dark);
+  background-color: var(--tolex);
+  background-image: var(--tolex-grain);
+  box-shadow: inset -2px 0 0 #e0a93b59;
+}
+.stage-title {
+  margin: 0;
+  padding: 0 2.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.fretboard {
+  display: block;
+  width: 100%;
+  height: 11.875rem;
+  filter: drop-shadow(0 12px 18px #00000059);
+}
+.fret { fill: #b9b3a6; }
+.inlay { fill: #efe7d6; opacity: 0.85; }
+.wire { stroke: #d9c79b; }
+/* Zone invisible plus épaisse : la corde réagit sans viser au pixel près. */
+.hit { stroke: transparent; stroke-width: 18; }
+.string {
+  transform-box: fill-box;
+  transform-origin: center;
+  /* Au chargement, les six cordes sont grattées de l'aiguë à la grave. */
+  animation: strum 0.8s ease-out both;
+}
+.string:hover { animation: pluck 0.7s ease-out; }
+.string:hover .wire { stroke: var(--brass-light); }
+
+@keyframes strum {
+  0% { transform: translateY(0); }
+  15% { transform: translateY(-2.2px); }
+  30% { transform: translateY(1.8px); }
+  45% { transform: translateY(-1.2px); }
+  62% { transform: translateY(0.7px); }
+  80% { transform: translateY(-0.3px); }
+  100% { transform: translateY(0); }
+}
+@keyframes pluck {
+  0% { transform: translateY(0); }
+  12% { transform: translateY(2.6px); }
+  26% { transform: translateY(-2.2px); }
+  40% { transform: translateY(1.5px); }
+  56% { transform: translateY(-0.9px); }
+  74% { transform: translateY(0.4px); }
+  100% { transform: translateY(0); }
+}
+
+.stage-points {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0 2.5rem;
+  list-style: none;
+}
+.stage-points li {
+  position: relative;
+  padding-left: 1.4rem;
+  font-size: 0.97rem;
+  line-height: 1.4;
+  color: #ffffffd9;
+}
+.stage-points li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--brass);
+  border-radius: 50%;
+}
+.stage-hint { margin: -0.75rem 0 0; padding: 0 2.5rem; font-size: 0.8rem; color: var(--on-dark-muted); }
+
+/* ---------- Panneau droit : formulaire ---------- */
+.panel { display: grid; place-items: center; padding: 3rem 2.5rem; }
+.panel-inner { width: 100%; max-width: 25rem; }
+.panel h1 { margin: 0; font-size: 2rem; line-height: 1.1; letter-spacing: -0.02em; }
+.panel-subtitle { margin: 0.5rem 0 1.75rem; color: var(--muted); }
+
+@keyframes shell-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.99); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 860px) {
+  .shell { grid-template-columns: 1fr; min-height: 0; }
+  .stage { gap: 1.25rem; padding: 2rem 0 1.5rem; box-shadow: inset 0 -2px 0 #e0a93b59; }
+  .stage-title { padding: 0 1.5rem; font-size: 1.7rem; }
+  .fretboard { height: 7.5rem; }
+  .stage-points, .stage-hint { display: none; }
+  .panel { padding: 2rem 1.5rem; }
+}
+
+@media (hover: none) {
+  .stage-hint { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell, .string, .string:hover { animation: none; }
+}

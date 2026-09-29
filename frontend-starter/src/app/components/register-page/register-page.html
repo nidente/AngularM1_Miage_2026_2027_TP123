@@ -1,13 +1,75 @@
-<section class="card">
-  <h1>Créer un compte</h1>
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <label>Nom<input formControlName="name" /></label>
-    <label>Email<input type="email" formControlName="email" /></label>
-    <label>Mot de passe<input type="password" formControlName="password" /></label>
-    <button type="submit">Créer mon compte</button>
+<app-auth-layout heading="Créer un compte" subtitle="Votre bibliothèque de backing tracks, accessible partout.">
+
+  <form class="auth-body" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="field">
+      <label class="field-label" for="register-name">Nom</label>
+      <div class="input-wrap">
+        <input id="register-name" formControlName="name" autocomplete="name" />
+      </div>
+      @if (form.controls.name.invalid && form.controls.name.touched) {
+        <p class="field-error">
+          @if (form.controls.name.hasError('required')) { Le nom est obligatoire. }
+          @if (form.controls.name.hasError('minlength')) { Le nom doit contenir au moins 2 caractères. }
+        </p>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="register-email">Email</label>
+      <div class="input-wrap">
+        <input id="register-email" type="email" formControlName="email" autocomplete="email" />
+      </div>
+      @if (form.controls.email.invalid && form.controls.email.touched) {
+        <p class="field-error">
+          @if (form.controls.email.hasError('required')) { L'email est obligatoire. }
+          @if (form.controls.email.hasError('email')) { Le format de l'email est invalide. }
+        </p>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="register-password">Mot de passe</label>
+      <div class="input-wrap has-toggle">
+        <input
+          id="register-password"
+          [type]="showPassword() ? 'text' : 'password'"
+          formControlName="password"
+          autocomplete="new-password"
+        />
+        <button
+          type="button"
+          class="toggle-pw"
+          [attr.aria-label]="showPassword() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+          [attr.aria-pressed]="showPassword()"
+          (click)="showPassword.set(!showPassword())"
+        >
+          @if (showPassword()) {
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 5.1A10 10 0 0 1 12 5c5 0 9 4.5 10 7a13 13 0 0 1-2.4 3.4M6.6 6.6C4.4 8 2.8 10.2 2 12c1 2.5 5 7 10 7 1.7 0 3.3-.5 4.6-1.2" /></svg>
+          } @else {
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12c1-2.5 5-7 10-7s9 4.5 10 7c-1 2.5-5 7-10 7S3 14.5 2 12z" /><circle cx="12" cy="12" r="3" /></svg>
+          }
+        </button>
+      </div>
+      @if (form.controls.password.invalid && form.controls.password.touched) {
+        <p class="field-error">
+          @if (form.controls.password.hasError('required')) { Le mot de passe est obligatoire. }
+          @if (form.controls.password.hasError('minlength')) { Le mot de passe doit contenir au moins 8 caractères. }
+        </p>
+      }
+    </div>
+
+    @if (error()) {
+      <p class="alert" role="alert">{{ error() }}</p>
+    }
+
+    <button type="submit" class="btn-primary" [disabled]="form.invalid || loading()">
+      @if (loading()) {
+        <span class="spinner" aria-hidden="true"></span> Création du compte…
+      } @else {
+        Créer mon compte
+      }
+    </button>
   </form>
-  @if (error()) {
-    <p class="error">{{ error() }}</p>
-  }
-  <p><a routerLink="/login">Déjà inscrit ?</a></p>
-</section>
+
+  <p class="auth-switch">Déjà inscrit ? <a routerLink="/login">Se connecter</a></p>
+</app-auth-layout>

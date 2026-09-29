@@ -1,1 +1,108 @@
-:host { display: block; max-width: 700px; margin: 0 auto; }
+:host { display: block; max-width: 62rem; margin: 1rem auto 0; }
+
+/* ---------- Tête d'ampli : tolex, avatar et identité ---------- */
+.amp-head {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  padding: 2.25rem 2.75rem;
+  color: var(--on-dark);
+  background-color: var(--tolex);
+  background-image: var(--tolex-grain);
+  border-radius: 1.5rem;
+  box-shadow:
+    inset 0 0 0 1px #061813,
+    inset 0 0 0 2.5px #e0a93b73,
+    0 24px 50px #0a1f1a2e;
+  animation: rise 0.4s ease-out;
+}
+
+/* Grand avatar : même rond laiton en relief que dans la nav. */
+.avatar-xl {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 7rem;
+  height: 7rem;
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--tolex);
+  background: radial-gradient(circle at 35% 30%, var(--brass-light), var(--brass) 70%);
+  border-radius: 50%;
+  box-shadow: inset 0 -4px 8px #0a1f1a33, 0 0 0 4px #ffffff1f, 0 12px 24px #00000059;
+}
+
+.identity { min-width: 0; }
+.identity h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+.email { margin: 0.5rem 0 0; font-size: 1.05rem; color: #ffffffd9; }
+.since { margin: 0.9rem 0 0; font-size: 0.9rem; color: var(--on-dark-muted); }
+
+/* ---------- Panneaux ---------- */
+.panels { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1.25rem; }
+.panel {
+  padding: 1.75rem;
+  background: white;
+  border-radius: 1.25rem;
+  box-shadow: 0 14px 34px #0a1f1a14, 0 0 0 1px #0a1f1a0d;
+  animation: rise 0.4s ease-out 0.08s both;
+}
+.panel h2 { margin: 0 0 1.1rem; font-size: 1.2rem; }
+.big-number {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--tolex);
+}
+.big-number span { font-size: 1.1rem; font-weight: 600; letter-spacing: 0; color: var(--muted); }
+.muted { margin: 0.8rem 0 0; color: var(--muted); line-height: 1.45; }
+.muted b { color: var(--ink); }
+.loading { text-align: center; }
+.link-btn {
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  color: var(--tolex);
+  text-decoration: none;
+  border: 1.5px solid #cfdcd7;
+  border-radius: 999px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.link-btn:hover { background: var(--mist); border-color: var(--brass); }
+
+.notice {
+  min-height: 1.4em;
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--green);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.notice.visible { opacity: 1; transform: none; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 760px) {
+  .amp-head { flex-direction: column; text-align: center; gap: 1.25rem; padding: 2rem 1.5rem; }
+  .panels { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .amp-head, .panel { animation: none; }
+  .notice { transition: none; }
+}

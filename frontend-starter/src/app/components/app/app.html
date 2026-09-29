@@ -1,15 +1,83 @@
-<header>
-  <div>
-    <b>Guitar Practice Cloud</b>
-    <small>Le cloud qui manque à votre ampli</small>
+<header class="topbar">
+  <div class="topbar-inner" [class.scrolled]="scrolled()">
+    <svg class="string" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="string-metal" x1="0" x2="1">
+          <stop offset="0" stop-color="#ffffff" stop-opacity="0" />
+          <stop offset="0.2" stop-color="#edc26a" stop-opacity="0.9" />
+          <stop offset="0.8" stop-color="#ffffff" stop-opacity="0.8" />
+          <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+      <path d="M0 5 Q250 0 500 5 T1000 5" vector-effect="non-scaling-stroke" />
+    </svg>
+
+    <a class="brand" routerLink="/tracks" aria-label="Guitar Practice Cloud, accueil">
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+        <path class="pick" d="M12 1.5C5.8 1.5 1.5 4.2 1.5 8.4c0 5.4 5.3 11.3 10.5 14.1 5.2-2.8 10.5-8.7 10.5-14.1 0-4.2-4.3-6.9-10.5-6.9z" />
+        <rect class="bar" x="7.2" y="8.5" width="1.9" height="5" rx="0.95" />
+        <rect class="bar" x="11.05" y="6" width="1.9" height="10" rx="0.95" />
+        <rect class="bar" x="14.9" y="8" width="1.9" height="6" rx="0.95" />
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">Guitar Practice Cloud</span>
+        <span class="brand-tagline">Le cloud qui manque à votre ampli</span>
+      </span>
+    </a>
+
+    <nav aria-label="Navigation principale">
+      @if (auth.token()) {
+        <a class="nav-link" routerLink="/tracks" routerLinkActive="active" ariaCurrentWhenActive="page">
+          Backing tracks
+        </a>
+
+        <div class="user-menu">
+          <button
+            type="button"
+            class="avatar-btn"
+            [class.open]="menuOpen()"
+            [attr.aria-expanded]="menuOpen()"
+            aria-haspopup="menu"
+            aria-label="Menu du compte"
+            (click)="toggleMenu()"
+          >
+            <span class="avatar">{{ initial() }}</span>
+            <svg class="chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" /></svg>
+          </button>
+
+          @if (menuOpen()) {
+            <div class="menu" role="menu">
+              <div class="menu-head">
+                <span class="menu-name">{{ auth.currentUser()?.name ?? 'Chargement…' }}</span>
+                <span class="menu-email">{{ auth.currentUser()?.email }}</span>
+              </div>
+              <a role="menuitem" routerLink="/profile" (click)="menuOpen.set(false)">Mon profil</a>
+              <button role="menuitem" type="button" class="menu-logout" (click)="logout()">Se déconnecter</button>
+            </div>
+          }
+        </div>
+      } @else {
+        <a class="nav-link" routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">
+          Connexion
+        </a>
+        <a class="cta" routerLink="/register">Créer un compte</a>
+      }
+    </nav>
   </div>
-  <nav aria-label="Navigation principale">
-    <a routerLink="/tracks">Backing tracks</a>
-    <a routerLink="/profile">Profil</a>
-    <a routerLink="/login">Connexion</a>
-  </nav>
 </header>
 
 <main>
   <router-outlet />
 </main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <span class="footer-brand">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path class="pick" d="M12 1.5C5.8 1.5 1.5 4.2 1.5 8.4c0 5.4 5.3 11.3 10.5 14.1 5.2-2.8 10.5-8.7 10.5-14.1 0-4.2-4.3-6.9-10.5-6.9z" />
+      </svg>
+      Guitar Practice Cloud
+    </span>
+    <span>Projet de Programmation Web, M1 MIAGE, Université Côte d'Azur, {{ year }}</span>
+  </div>
+</footer>

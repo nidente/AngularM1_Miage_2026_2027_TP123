@@ -1,0 +1,51 @@
+<div class="shell">
+  <aside class="stage">
+    <p class="stage-title">Vos backing tracks, partout où vous jouez.</p>
+
+    <svg class="fretboard" viewBox="0 0 400 180" preserveAspectRatio="xMinYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="fb-wood" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#2b1c15" />
+          <stop offset="0.5" stop-color="#1e130e" />
+          <stop offset="1" stop-color="#2b1c15" />
+        </linearGradient>
+      </defs>
+
+      <rect x="0" y="8" width="400" height="164" fill="url(#fb-wood)" />
+      <rect x="0" y="8" width="7" height="164" fill="#e9dfc4" />
+
+      @for (x of frets; track x) {
+        <rect [attr.x]="x - 1.2" y="8" width="2.4" height="164" class="fret" />
+      }
+      @for (x of inlays; track x) {
+        <circle [attr.cx]="x" cy="90" r="5" class="inlay" />
+      }
+      <circle cx="384.4" cy="62" r="5" class="inlay" />
+      <circle cx="384.4" cy="118" r="5" class="inlay" />
+
+      @for (s of strings; track s.y) {
+        <g class="string" [style.animation-delay.ms]="$index * 70">
+          <line x1="0" x2="400" [attr.y1]="s.y" [attr.y2]="s.y" class="hit" />
+          <line x1="0" x2="400" [attr.y1]="s.y" [attr.y2]="s.y" class="wire" [attr.stroke-width]="s.width" />
+        </g>
+      }
+    </svg>
+
+    <ul class="stage-points">
+      <li>Importez vos pistes audio, jusqu'à 25 Mo chacune.</li>
+      <li>Écoutez-les depuis n'importe quel navigateur.</li>
+      <li>Retrouvez toute votre bibliothèque au même endroit.</li>
+    </ul>
+    <p class="stage-hint">Passez la souris sur les cordes.</p>
+  </aside>
+
+  <section class="panel">
+    <div class="panel-inner">
+      <h1>{{ heading() }}</h1>
+      @if (subtitle()) {
+        <p class="panel-subtitle">{{ subtitle() }}</p>
+      }
+      <ng-content />
+    </div>
+  </section>
+</div>

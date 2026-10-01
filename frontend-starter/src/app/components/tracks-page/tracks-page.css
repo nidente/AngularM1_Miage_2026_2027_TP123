@@ -1,1 +1,135 @@
 :host { display: block; }
+
+/* ---------- En-tête tolex ---------- */
+.library-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 2rem 2.25rem;
+  color: var(--on-dark);
+  background-color: var(--tolex);
+  background-image: var(--tolex-grain);
+  border-radius: 1.5rem;
+  box-shadow:
+    inset 0 0 0 1px #061813,
+    inset 0 0 0 2.5px #e0a93b73,
+    0 20px 44px #0a1f1a2e;
+  animation: rise 0.4s ease-out;
+}
+.eyebrow { margin: 0; font-size: 0.8rem; letter-spacing: 0.06em; color: var(--on-dark-muted); }
+.library-head h1 { margin: 0.2rem 0 0; font-size: clamp(1.7rem, 3vw, 2.2rem); }
+.subtitle { margin: 0.4rem 0 0; color: var(--on-dark-muted); }
+.count { flex-shrink: 0; margin: 0; font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; }
+
+/* ---------- Panneau d'import ---------- */
+.upload-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  align-items: start;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 26px #0a1f1a14, 0 0 0 1px #0a1f1a0d;
+  animation: rise 0.4s ease-out 0.05s both;
+}
+.upload-field { display: grid; gap: 0.4rem; }
+.upload-submit { width: auto; height: 3rem; padding: 0 1.5rem; margin-top: 1.6rem; white-space: nowrap; }
+.upload-panel > .alert,
+.upload-panel > .upload-success { grid-column: 1 / -1; }
+.upload-success { min-height: 1.4em; margin: 0; font-weight: 600; color: var(--green); }
+
+/* Sélecteur de fichier stylé, posé au-dessus du vrai input transparent. */
+.file-picker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 3rem;
+  padding: 0 0.9rem;
+  overflow: hidden;
+  background: white;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 0.625rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.file-picker:hover { border-color: #a9bfb7; }
+.file-picker.disabled { cursor: not-allowed; opacity: 0.6; }
+.file-picker input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.file-picker-name {
+  flex: 1;
+  overflow: hidden;
+  font-size: 0.92rem;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.file-picker-btn {
+  flex-shrink: 0;
+  margin-left: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--tolex);
+  background: var(--mist);
+  border-radius: 999px;
+}
+
+/* ---------- Recherche (limitée à la page affichée) ---------- */
+.search-row { margin-top: 1.5rem; }
+.search-wrap { max-width: 22rem; }
+.search-hint { margin: 0.4rem 0 0; font-size: 0.8rem; color: var(--muted); }
+
+/* ---------- Grille de cards ---------- */
+.list-error { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.25rem; }
+.library-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  min-height: 3rem;
+  transition: opacity 0.15s ease;
+}
+.library-grid.is-loading { opacity: 0.55; }
+.list-status { grid-column: 1 / -1; margin: 0; font-size: 0.9rem; color: var(--muted); }
+.empty { grid-column: 1 / -1; margin: 1rem 0; color: var(--muted); text-align: center; }
+
+mat-paginator { margin-top: 1rem; background: transparent; }
+
+.player-error { margin-top: 1.25rem; }
+.delete-success { min-height: 1.4em; margin: 0.75rem 0 0; font-weight: 600; color: var(--green); }
+
+/* Lecteur en cours : petit bandeau flottant, cohérent avec le reste du site. */
+.player {
+  position: sticky;
+  bottom: 1rem;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 16px 36px #0a1f1a26, 0 0 0 1px #0a1f1a0d;
+}
+.player span { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+.player audio { width: 100%; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 760px) {
+  .library-head { flex-direction: column; align-items: flex-start; }
+  .upload-panel { grid-template-columns: 1fr; }
+  .upload-submit { width: 100%; margin-top: 0.2rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .library-head, .upload-panel { animation: none; }
+}

@@ -46,7 +46,9 @@ main { width: 100%; max-width: var(--content-width); margin: 2rem auto; padding:
 :focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
 
 /* ---------- Boutons et champs par défaut ---------- */
-button {
+/* :where() = spécificité nulle : n'importe quelle classe (.btn-primary, .toggle-pw…) garde la main.
+   :not([class*='mat-']) : les boutons d'Angular Material (paginator…) gardent leur propre style. */
+:where(button:not([class*='mat-'])) {
   font: inherit;
   padding: 0.7rem 1rem;
   color: white;
@@ -56,10 +58,9 @@ button {
   cursor: pointer;
   transition: background 0.15s ease, transform 0.1s ease;
 }
-/* :where() = spécificité nulle : n'importe quelle classe (.btn-primary, .toggle-pw…) garde la main. */
-:where(button:hover:not(:disabled)) { background: var(--green-dark); }
-:where(button:active:not(:disabled)) { transform: translateY(1px); }
-:where(button:disabled) { opacity: 0.45; cursor: not-allowed; }
+:where(button:not([class*='mat-']):hover:not(:disabled)) { background: var(--green-dark); }
+:where(button:not([class*='mat-']):active:not(:disabled)) { transform: translateY(1px); }
+:where(button:not([class*='mat-']):disabled) { opacity: 0.45; cursor: not-allowed; }
 
 input {
   font: inherit;
@@ -73,21 +74,31 @@ input {
 :where(input:hover) { border-color: #a9bfb7; }
 :where(input:focus) { outline: none; border-color: var(--brass); box-shadow: 0 0 0 4px #e0a93b33; }
 
-/* ---------- Page backing tracks (sera refaite au TP2) ---------- */
-.hero { margin-bottom: 1rem; padding: 2rem; color: var(--on-dark); background: linear-gradient(120deg, var(--forest), var(--green)); border-radius: 1.25rem; }
-.eyebrow { letter-spacing: 0.15em; font-size: 0.75rem; }
-.grid { display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; }
-.card { padding: 1.3rem; background: white; border-radius: 1rem; box-shadow: 0 8px 25px #0a1f1a14; }
-.card form, label { display: grid; gap: 0.4rem; }
-label { margin: 0.8rem 0; }
-.row, .track, .pager { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.track { padding: 0.8rem 0; border-bottom: 1px solid var(--line); }
-.track small { display: block; color: var(--muted); }
-.pager { margin: 1rem 0; }
-audio { width: 100%; }
-.error { color: var(--danger); }
+/* ---------- Angular Material : le thème azure-blue, recoloré aux couleurs du site ---------- */
+html {
+  --mat-sys-primary: var(--green);
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-on-surface: var(--ink);
+  --mat-sys-on-surface-variant: var(--muted);
+  --mat-sys-outline: var(--line-strong);
+  --mat-sys-body-small-font: var(--font-body);
+  --mat-sys-body-medium-font: var(--font-body);
+  --mat-sys-body-large-font: var(--font-body);
+  --mat-sys-label-large-font: var(--font-body);
 
-/* ---------- Formulaires (connexion, inscription, profil) ---------- */
+  --mat-paginator-container-background-color: transparent;
+  --mat-paginator-container-text-size: 0.9rem;
+  --mat-paginator-select-trigger-text-size: 0.9rem;
+  --mat-paginator-enabled-icon-color: var(--ink);
+}
+
+/* Le nombre choisi (5/10/20) est centré dans son cadre au lieu de coller à gauche. */
+.mat-mdc-paginator-page-size-select .mat-mdc-select-value {
+  flex: 1;
+  text-align: center;
+}
+
+/* ---------- Formulaires (connexion, inscription, profil, import de piste) ---------- */
 .auth-body { display: grid; gap: 1.1rem; }
 .field { display: grid; gap: 0.4rem; }
 .field-label { margin: 0; font-size: 0.9rem; font-weight: 600; }

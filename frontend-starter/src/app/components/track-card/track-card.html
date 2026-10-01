@@ -1,0 +1,61 @@
+<article class="card" [class.is-playing]="playing()" [attr.aria-label]="track().title">
+  <div class="cover" aria-hidden="true">
+    <svg class="cover-pick" viewBox="0 0 24 24">
+      <path d="M12 1.5C5.8 1.5 1.5 4.2 1.5 8.4c0 5.4 5.3 11.3 10.5 14.1 5.2-2.8 10.5-8.7 10.5-14.1 0-4.2-4.3-6.9-10.5-6.9z" />
+    </svg>
+    <span class="format">{{ track().mimeType | audioFormat }}</span>
+  </div>
+
+  <button
+    type="button"
+    class="play"
+    [disabled]="loading()"
+    (click)="play.emit()"
+    [attr.aria-label]="
+      loading()
+        ? 'Chargement de ' + track().title
+        : (audioPlaying() ? 'Mettre en pause ' : 'Lire ') + track().title
+    "
+  >
+    @if (loading()) {
+      <span class="play-spinner" aria-hidden="true"></span>
+    } @else if (audioPlaying()) {
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5a1 1 0 0 1 1 1v12a1 1 0 0 1-2 0V6a1 1 0 0 1 1-1zm8 0a1 1 0 0 1 1 1v12a1 1 0 0 1-2 0V6a1 1 0 0 1 1-1z" /></svg>
+    } @else {
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10.2-6.5a1 1 0 0 0 0-1.8L9.5 4.6A1 1 0 0 0 8 5.5z" /></svg>
+    }
+  </button>
+
+  <button
+    type="button"
+    class="delete"
+    [disabled]="deleting()"
+    (click)="delete.emit()"
+    [attr.aria-label]="'Supprimer ' + track().title"
+  >
+    @if (deleting()) {
+      <span class="play-spinner" aria-hidden="true"></span>
+    } @else {
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m-8 0 1 13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1l1-13" /></svg>
+    }
+  </button>
+
+  <div class="body">
+    <h3 class="title">{{ track().title }}</h3>
+    <p class="file" [title]="track().originalName">{{ track().originalName }}</p>
+    <dl class="meta">
+      <div>
+        <dt>Format</dt>
+        <dd>{{ track().mimeType | audioFormat }}</dd>
+      </div>
+      <div>
+        <dt>Taille</dt>
+        <dd>{{ track().size | fileSize }}</dd>
+      </div>
+      <div>
+        <dt>Ajoutée le</dt>
+        <dd>{{ track().createdAt | date: 'd MMM y' }}</dd>
+      </div>
+    </dl>
+  </div>
+</article>

@@ -26,4 +26,9 @@ export class TrackService {
       responseType: 'blob',
     });
   }
+
+  /** Bonus au contrat : DELETE /api/tracks/:id → 204 (voir API_CONTRACT.md). */
+  remove(id: string) {
+    return this.http.delete<void>(`/api/tracks/${id}`);
+  }
 }

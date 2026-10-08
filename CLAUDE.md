@@ -53,11 +53,11 @@ Mission 0 (cartographie, [`MISSION_0_CARTOGRAPHIE.md`](MISSION_0_CARTOGRAPHIE.md
 
 Rien modifié dans `backend/`, `API_CONTRACT.md` inchangé. `npm run build` passe sans warning à chaque étape. Commité dans `aa0bbcf` (01/10).
 
-### Mode clair/sombre — fait, non commité
+### Mode clair/sombre — fait
 
 Entre TP2 et TP3, Aziz a ajouté un bouton soleil/lune dans la navbar : `shared/services/theme.service.ts`, attribut `data-theme` sur `<html>`, variables de couleur redéfinies dans `styles.css`, script dans `index.html` contre le flash au chargement. Toute nouvelle couleur doit passer par les variables (`--surface`, `--ink`, `--line`…) pour marcher dans les deux thèmes.
 
-### TP3 — fait en entier (08/10/2026), non commité
+### TP3 — fait en entier (08/10/2026)
 
 Découpé par Claude en 10 points ; Aziz a ensuite délégué toutes les décisions (« fais ce que tu veux et valide tous les points »).
 - **Mission 5 — suppression** : la base existait (bonus TP2). Ajouts : `shared/services/notification.service.ts` (enveloppe `MatSnackBar`, styles `.snack-success`/`.snack-error` dans `styles.css`) ; gestion du 404 (piste supprimée dans un autre onglet ou appartenant à un autre utilisateur : le backend ne distingue pas) avec message dédié + rechargement de la liste ; `deleteErrorMessage()` dans `audio-file.validator.ts`. `window.confirm` gardé.
@@ -69,7 +69,7 @@ Découpé par Claude en 10 points ; Aziz a ensuite délégué toutes les décisi
 ## 4. Ce qu'il reste à faire
 
 - [ ] **Menu burger mobile** de la navbar (mis de côté volontairement par Aziz, TP1).
-- [ ] **Commit et push du TP3 et du mode sombre** : rien n'est commité depuis `aa0bbcf` (TP2). `demo_navigation.mp4` et `.vscode/` ne sont pas suivis : demander à Aziz s'ils doivent l'être. **Ne committer / pousser que quand Aziz le demande.**
+- [ ] `demo_navigation.mp4` et `.vscode/` ne sont pas suivis par git : demander à Aziz s'ils doivent l'être. TP3 et mode sombre commités et poussés (`ebe6401`, 08/10). **Ne committer / pousser que quand Aziz le demande.**
 - [ ] Décider si `intrus.checkpoint@example.com` (compte de test du checkpoint Network) doit être supprimé depuis Atlas — aucune urgence.
 
 ## 5. Comment continuer

@@ -1,6 +1,7 @@
 import { Component, computed, effect, ElementRef, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
+import { ThemeService } from '../../shared/services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { AuthService } from '../../shared/services/auth.service';
 })
 export class AppComponent {
   protected readonly auth = inject(AuthService);
+  protected readonly theme = inject(ThemeService);
   private readonly router = inject(Router);
   private readonly host = inject(ElementRef<HTMLElement>);
 

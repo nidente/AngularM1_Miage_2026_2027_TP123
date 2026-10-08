@@ -14,11 +14,20 @@ export class TrackService {
     });
   }
 
+  /**
+   * Envoie le fichier en multipart. `observe: 'events'` + `reportUploadProgress`
+   * font émettre à l'Observable chaque étape de la requête (envoi, progression
+   * de l'upload, réponse finale) au lieu de la seule réponse. Nécessite
+   * `withXhr()` dans main.ts : le backend fetch() par défaut ne le permet pas.
+   */
   upload(file: File, title: string) {
     const body = new FormData();
     body.append('audio', file);
     body.append('title', title);
-    return this.http.post<Track>('/api/tracks', body);
+    return this.http.post<Track>('/api/tracks', body, {
+      reportUploadProgress: true,
+      observe: 'events',
+    });
   }
 
   audio(id: string) {

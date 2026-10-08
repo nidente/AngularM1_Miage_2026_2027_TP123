@@ -56,10 +56,34 @@
       }
     </button>
 
-    @if (uploadError()) {
-      <p class="alert" role="alert">{{ uploadError() }}</p>
-    }
-    <p class="upload-success" role="status">{{ uploadSuccess() }}</p>
+    <!-- Une seule zone d'état, pilotée par uploadState (aucun / en cours / réussi / échoué). -->
+    <div class="upload-status">
+      @let state = uploadState();
+      @if (state.status === 'uploading') {
+        <div class="upload-progress">
+          <mat-progress-bar
+            [mode]="state.progress === null ? 'indeterminate' : 'determinate'"
+            [value]="state.progress ?? 0"
+            aria-label="Progression de l'envoi"
+          />
+          <span class="upload-percent" role="status">
+            @if (state.progress === null) {
+              Envoi en cours…
+            } @else if (state.progress < 100) {
+              {{ state.progress }} %
+            } @else {
+              Fichier reçu, enregistrement…
+            }
+          </span>
+        </div>
+      } @else if (state.status === 'success') {
+        <p class="upload-success" role="status">
+          « {{ state.track.title }} » a été ajouté à votre bibliothèque.
+        </p>
+      } @else if (state.status === 'error') {
+        <p class="alert" role="alert">{{ state.message }}</p>
+      }
+    </div>
   </div>
 
   @if (error()) {
@@ -122,7 +146,6 @@
   @if (playError()) {
     <p class="alert player-error" role="alert">{{ playError() }}</p>
   }
-  <p class="delete-success" role="status">{{ deleteSuccess() }}</p>
 
   @if (audioUrl() && nowPlaying(); as track) {
     <div class="player" role="status">

@@ -30,16 +30,33 @@
   gap: 1.25rem;
   margin-top: 1.25rem;
   padding: 1.5rem;
-  background: white;
+  background: var(--surface);
   border-radius: 1.25rem;
   box-shadow: 0 10px 26px #0a1f1a14, 0 0 0 1px #0a1f1a0d;
   animation: rise 0.4s ease-out 0.05s both;
 }
 .upload-field { display: grid; gap: 0.4rem; }
-.upload-submit { width: auto; height: 3rem; padding: 0 1.5rem; margin-top: 1.6rem; white-space: nowrap; }
-.upload-panel > .alert,
-.upload-panel > .upload-success { grid-column: 1 / -1; }
-.upload-success { min-height: 1.4em; margin: 0; font-weight: 600; color: var(--green); }
+/* Largeur fixe : le libellé « Envoi en cours… » ne doit pas décaler les champs. */
+.upload-submit { width: auto; min-width: 12.5rem; height: 3rem; padding: 0 1.5rem; margin-top: 1.6rem; white-space: nowrap; }
+/* Zone d'état sur toute la largeur ; hauteur réservée pour que le panneau ne saute pas. */
+.upload-status { grid-column: 1 / -1; min-height: 1.4em; }
+.upload-success { margin: 0; font-weight: 600; color: var(--green); }
+.upload-progress { display: flex; align-items: center; gap: 0.9rem; }
+.upload-progress mat-progress-bar {
+  flex: 1;
+  --mat-progress-bar-active-indicator-color: var(--green);
+  --mat-progress-bar-track-color: var(--line);
+  --mat-progress-bar-track-height: 6px;
+  --mat-progress-bar-active-indicator-height: 6px;
+  border-radius: 999px;
+}
+.upload-percent {
+  min-width: 3.5rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--ink);
+}
 
 /* Sélecteur de fichier stylé, posé au-dessus du vrai input transparent. */
 .file-picker {
@@ -49,13 +66,13 @@
   height: 3rem;
   padding: 0 0.9rem;
   overflow: hidden;
-  background: white;
+  background: var(--surface);
   border: 1.5px solid var(--line-strong);
   border-radius: 0.625rem;
   cursor: pointer;
   transition: border-color 0.15s ease;
 }
-.file-picker:hover { border-color: #a9bfb7; }
+.file-picker:hover { border-color: var(--line-hover); }
 .file-picker.disabled { cursor: not-allowed; opacity: 0.6; }
 .file-picker input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 .file-picker-name {
@@ -72,7 +89,7 @@
   padding: 0.3rem 0.7rem;
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--tolex);
+  color: var(--ink);
   background: var(--mist);
   border-radius: 999px;
 }
@@ -100,7 +117,6 @@
 mat-paginator { margin-top: 1rem; background: transparent; }
 
 .player-error { margin-top: 1.25rem; }
-.delete-success { min-height: 1.4em; margin: 0.75rem 0 0; font-weight: 600; color: var(--green); }
 
 /* Lecteur en cours : petit bandeau flottant, cohérent avec le reste du site. */
 .player {
@@ -112,7 +128,7 @@ mat-paginator { margin-top: 1rem; background: transparent; }
   gap: 0.4rem;
   margin-top: 1.5rem;
   padding: 1rem 1.25rem;
-  background: white;
+  background: var(--surface);
   border-radius: 1rem;
   box-shadow: 0 16px 36px #0a1f1a26, 0 0 0 1px #0a1f1a0d;
 }

@@ -15,6 +15,14 @@
   --line: #e1ebe7;
   --line-strong: #cfdcd7;
   --danger: #b23a3a;
+  /* Surfaces (cards, panneaux, champs) : changent avec le thème. */
+  --surface: #ffffff;
+  --surface-2: #f8fbfa;
+  --line-hover: #a9bfb7;
+  --danger-soft: #b23a3a12;
+  --menu-bg: #ffffffe6;
+  --halo-green: #1d755e2e;
+  --halo-brass: #e0a93b24;
   --on-dark: #ffffff;
   --on-dark-muted: #ffffffb3;
   --tolex: #0c2720;
@@ -23,17 +31,63 @@
   --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
   --font-body: 'Figtree', system-ui, sans-serif;
 
+  color-scheme: light;
   font-family: var(--font-body);
   color: var(--ink);
   background: var(--mist);
+}
+
+/*
+ * Thème sombre : « scène éclairée ». Appliqué si l'utilisateur l'a choisi
+ * (data-theme="dark", posé par ThemeService), ou par défaut si son système
+ * est en mode sombre et qu'il n'a pas explicitement choisi le clair.
+ * Le tolex, le laiton et les textes sur fond tolex restent identiques.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --ink: #e4eee9;
+    --muted: #93a8a0;
+    --mist: #0b1412;
+    --line: #22332e;
+    --line-strong: #31453e;
+    --line-hover: #4a6158;
+    --green: #2f9e7c;
+    --green-dark: #26876a;
+    --danger: #e57373;
+    --danger-soft: #e5737317;
+    --surface: #131f1c;
+    --surface-2: #0f1917;
+    --menu-bg: #131f1cf2;
+    --halo-green: #1d755e33;
+    --halo-brass: #e0a93b14;
+  }
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --ink: #e4eee9;
+  --muted: #93a8a0;
+  --mist: #0b1412;
+  --line: #22332e;
+  --line-strong: #31453e;
+  --line-hover: #4a6158;
+  --green: #2f9e7c;
+  --green-dark: #26876a;
+  --danger: #e57373;
+  --danger-soft: #e5737317;
+  --surface: #131f1c;
+  --surface-2: #0f1917;
+  --menu-bg: #131f1cf2;
+  --halo-green: #1d755e33;
+  --halo-brass: #e0a93b14;
 }
 
 /* Deux halos discrets (vert, laiton) pour donner de la profondeur au fond. */
 body {
   min-height: 100vh;
   background:
-    radial-gradient(900px 500px at 10% -10%, #1d755e2e, transparent 70%),
-    radial-gradient(700px 400px at 95% 0%, #e0a93b24, transparent 70%),
+    radial-gradient(900px 500px at 10% -10%, var(--halo-green), transparent 70%),
+    radial-gradient(700px 400px at 95% 0%, var(--halo-brass), transparent 70%),
     var(--mist);
   background-attachment: fixed;
 }
@@ -66,12 +120,12 @@ input {
   font: inherit;
   padding: 0.75rem;
   color: var(--ink);
-  background: white;
+  background: var(--surface);
   border: 1.5px solid var(--line-strong);
   border-radius: 0.625rem;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-:where(input:hover) { border-color: #a9bfb7; }
+:where(input:hover) { border-color: var(--line-hover); }
 :where(input:focus) { outline: none; border-color: var(--brass); box-shadow: 0 0 0 4px #e0a93b33; }
 
 /* ---------- Angular Material : le thème azure-blue, recoloré aux couleurs du site ---------- */
@@ -81,6 +135,10 @@ html {
   --mat-sys-on-surface: var(--ink);
   --mat-sys-on-surface-variant: var(--muted);
   --mat-sys-outline: var(--line-strong);
+  --mat-sys-outline-variant: var(--line);
+  --mat-sys-surface: var(--surface);
+  --mat-sys-surface-container: var(--surface);
+  --mat-sys-surface-container-high: var(--surface);
   --mat-sys-body-small-font: var(--font-body);
   --mat-sys-body-medium-font: var(--font-body);
   --mat-sys-body-large-font: var(--font-body);
@@ -98,6 +156,18 @@ html {
   text-align: center;
 }
 
+/* SnackBar (NotificationService) : fond tolex comme la navbar, liseré vert ou rouge selon le message. */
+.snack-success,
+.snack-error {
+  --mat-snack-bar-container-color: var(--tolex);
+  --mat-snack-bar-supporting-text-color: var(--on-dark);
+  --mat-snack-bar-supporting-text-font: var(--font-body);
+  --mat-snack-bar-button-color: var(--brass-light);
+  --mat-snack-bar-container-shape: 0.75rem;
+}
+.snack-success .mat-mdc-snackbar-surface { border-left: 4px solid #2f9e7c; }
+.snack-error .mat-mdc-snackbar-surface { border-left: 4px solid #e57373; }
+
 /* ---------- Formulaires (connexion, inscription, profil, import de piste) ---------- */
 .auth-body { display: grid; gap: 1.1rem; }
 .field { display: grid; gap: 0.4rem; }
@@ -109,15 +179,15 @@ html {
   padding: 0 0.9rem;
   font: inherit;
   color: var(--ink);
-  background: #f8fbfa;
+  background: var(--surface-2);
   border: 1.5px solid var(--line-strong);
   border-radius: 0.75rem;
   transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
-.input-wrap input:hover { border-color: #a9bfb7; }
+.input-wrap input:hover { border-color: var(--line-hover); }
 .input-wrap input:focus {
   outline: none;
-  background: white;
+  background: var(--surface);
   border-color: var(--brass);
   box-shadow: 0 0 0 4px #e0a93b33;
 }
@@ -174,7 +244,7 @@ html {
   padding: 0.75rem 0.9rem;
   font-size: 0.92rem;
   color: var(--danger);
-  background: #b23a3a12;
+  background: var(--danger-soft);
   border-left: 3px solid var(--danger);
   border-radius: 0.5rem;
 }
@@ -191,4 +261,9 @@ html {
 @media (max-width: 720px) {
   .grid { display: block; }
   .grid .card { margin-bottom: 1rem; }
+}
+
+/* Transition douce lors du changement de thème (pas au premier affichage). */
+:root.theme-transition, :root.theme-transition * {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease !important;
 }

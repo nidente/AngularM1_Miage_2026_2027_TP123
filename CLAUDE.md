@@ -1,6 +1,6 @@
 # CLAUDE.md — Contexte de session pour le TP Angular (Guitar Practice Cloud)
 
-> Fichier de contexte pour reprendre le travail sur ce TP dans une nouvelle session Claude Code. À lire en entier avant de reprendre. Dernière mise à jour : 29 septembre 2026.
+> Fichier de contexte pour reprendre le travail sur ce TP dans une nouvelle session Claude Code. À lire en entier avant de reprendre. Dernière mise à jour : 8 octobre 2026.
 
 ## 1. Qui est l'utilisateur et le cadre
 
@@ -13,7 +13,7 @@ Ce TP a ses propres règles, définies par l'enseignant dans plusieurs fichiers 
 - [`CONSEILS_POUR_UTIISER_ASSISTANT_AI.md`](CONSEILS_POUR_UTIISER_ASSISTANT_AI.md) → méthode de travail avec un assistant IA : analyser avant de coder, proposer un plan, attendre validation avant modification importante, expliquer/vérifier après coup, travailler par petites étapes. **C'est la méthode suivie dans toute la conversation jusqu'ici**, avec une variante demandée par Aziz pour les missions longues : les découper en points numérotés (numérotation **inventée par Claude**, absente du sujet officiel) et avancer un point à la fois.
 - [`API_CONTRACT.md`](API_CONTRACT.md) → contrat HTTP figé des routes (ne pas casser sans mettre à jour ce fichier dans le même changement). La route bonus `DELETE /api/tracks/:id` y figurait déjà avant qu'on l'utilise côté frontend.
 - [`ATLAS_SETUP.md`](ATLAS_SETUP.md) → configuration MongoDB Atlas.
-- [`RAPPORT_IA_MODELE.md`](RAPPORT_IA_MODELE.md) → rapport d'usage IA tenu à jour à chaque mission, au format journal de prompts. **À jour pour TP1 (Mission 0, Mission 1, checkpoint Network) et TP2 en entier** (prérequis, Mission 2, Mission 3 en 7 points, améliorations facultatives, checkpoint Network).
+- [`RAPPORT_IA_MODELE.md`](RAPPORT_IA_MODELE.md) → rapport d'usage IA tenu à jour à chaque mission, au format journal de prompts. **À jour pour TP1, TP2 et TP3 en entier** (TP3 : missions 5-7, checkpoint Network, réponses de restitution orale). Le rapport des tests du TP3 est dans [`RAPPORT_TESTS_TP3.md`](RAPPORT_TESTS_TP3.md).
 - `SUJET_ETUDIANT_TP1.md`, `TP2.md`, `TP3.md` → énoncés des 3 séances.
 
 ## 2. État de l'environnement local
@@ -21,6 +21,8 @@ Ce TP a ses propres règles, définies par l'enseignant dans plusieurs fichiers 
 - **Backend** : `backend/.env` fonctionne (`npm start` depuis `backend/`, écoute sur `:3000`). `MONGODB_URI` contient `/guitar-practice-cloud?` (conforme à `ATLAS_SETUP.md`). Le compte démo `demo@example.com` / `Demo1234!` est recréé par `backend/src/server.js` au démarrage s'il n'existe pas. L'ancienne base `test` existe toujours dans Atlas, inutilisée.
 - **Frontend** : `frontend-starter/`, Angular 22, `npm start` (= `ng serve --proxy-config proxy.conf.json`) écoute sur `:4200`. Nécessite **Node ≥ v24.15.0** (`source ~/.nvm/nvm.sh && nvm use 24`). **Angular Material 22.1.8 + CDK installés** (thème `azure-blue` recoloré aux couleurs du site via ses variables CSS dans `styles.css`), utilisés pour le paginator de la bibliothèque.
 - Les deux serveurs tournent **dans les terminaux d'Aziz**, pas lancés par Claude. `npm run build` ne touche pas au serveur en cours : **prévenir Aziz quand une modif demande de relancer `ng serve`** (`angular.json`, `index.html`, `host` d'un composant) ou un Ctrl+Shift+R.
+- **Tests** : `npm test` dans `frontend-starter/` (Vitest + jsdom, 18 tests) et dans `backend/` (`node --test`, 8 tests). Aucun ne demande MongoDB ni un serveur lancé.
+- **Tester la progression d'upload en local** : l'envoi est instantané et le throttling des devtools ne ralentit pas le corps d'un upload. Il faut un proxy TCP qui bride le débit (script `slow-proxy.mjs` écrit dans le scratchpad, port 4300 → 4200) et un fichier de plus de ~5 Mo, sinon les tampons TCP absorbent tout. Avec `curl`, préciser `-F "audio=@fichier.mp3;type=audio/mpeg"`, sinon le backend répond 400 (type `application/octet-stream`).
 - **Vérifier le rendu soi-même** : le MCP Playwright ne se connecte pas dans ces sessions (timeout). Contournement qui marche : un script Node utilisant le module Playwright du cache npx (`~/.npm/_npx/*/node_modules/playwright`) avec `executablePath: '/usr/bin/google-chrome'`. Écrire ces scripts dans le scratchpad, jamais dans le projet.
 - **Données de démonstration** : le compte démo contient **7 pistes de test** (Blues en la, Rock en mi, Funk en ré, Jazz en sol, Reggae en do, Ballade en fa, + `song2.mp3` sans titre custom), uploadées par Claude avec `curl` pour tester la pagination (Mission 2). **Un compte de test supplémentaire** `intrus.checkpoint@example.com` a été créé pour vérifier l'isolation par propriétaire (checkpoint Network) ; il n'y a pas de route pour le supprimer, il reste dans Atlas sans conséquence. **Incident du 29/09** : un script de test Claude a supprimé par erreur les 7 pistes de démo (bug du script, pas de l'appli) ; elles ont été réapprovisionnées à l'identique.
 
@@ -49,13 +51,25 @@ Mission 0 (cartographie, [`MISSION_0_CARTOGRAPHIE.md`](MISSION_0_CARTOGRAPHIE.md
 - **Bug réel trouvé pendant cette vérification et corrigé** : le bouton « Envoyer » de l'upload ne fonctionnait plus depuis la refonte des cards (point 5) — `<form (ngSubmit)="upload()">` sans `[formGroup]` ni `FormsModule` ne déclenche jamais `(ngSubmit)`, donc le clic faisait une vraie soumission HTML native (rechargement de page). Remis en `<div>` + bouton `type="button" (click)="upload()"`, comme à l'origine du starter. **Leçon retenue** : retester les interactions clé après une refonte visuelle du template, pas seulement le rendu visuel.
 - **Détail petit fix** : le nombre de pistes/page du paginator Material était collé à gauche dans son cadre ; centré via une règle ciblée dans `styles.css`.
 
-Rien modifié dans `backend/`, `API_CONTRACT.md` inchangé. `npm run build` passe sans warning à chaque étape.
+Rien modifié dans `backend/`, `API_CONTRACT.md` inchangé. `npm run build` passe sans warning à chaque étape. Commité dans `aa0bbcf` (01/10).
+
+### Mode clair/sombre — fait, non commité
+
+Entre TP2 et TP3, Aziz a ajouté un bouton soleil/lune dans la navbar : `shared/services/theme.service.ts`, attribut `data-theme` sur `<html>`, variables de couleur redéfinies dans `styles.css`, script dans `index.html` contre le flash au chargement. Toute nouvelle couleur doit passer par les variables (`--surface`, `--ink`, `--line`…) pour marcher dans les deux thèmes.
+
+### TP3 — fait en entier (08/10/2026), non commité
+
+Découpé par Claude en 10 points ; Aziz a ensuite délégué toutes les décisions (« fais ce que tu veux et valide tous les points »).
+- **Mission 5 — suppression** : la base existait (bonus TP2). Ajouts : `shared/services/notification.service.ts` (enveloppe `MatSnackBar`, styles `.snack-success`/`.snack-error` dans `styles.css`) ; gestion du 404 (piste supprimée dans un autre onglet ou appartenant à un autre utilisateur : le backend ne distingue pas) avec message dédié + rechargement de la liste ; `deleteErrorMessage()` dans `audio-file.validator.ts`. `window.confirm` gardé.
+- **Mission 6 — progression d'upload** : `TrackService.upload()` en `observe: 'events'` + `reportUploadProgress: true` ; état unique `UploadState` (`shared/models/upload-state.model.ts`) au lieu de 3 signaux ; `<mat-progress-bar>`. **Piège Angular 22** : le backend HTTP par défaut est `fetch()`, sans progression d'upload → `withXhr()` ajouté dans `main.ts` (`reportProgress` est déprécié en v22).
+- **Mission 7 — tests** : `jsdom` ajouté, `tsconfig.spec.json`, cible `test` d'`angular.json` complétée, specs exclues de `tsconfig.app.json`. Specs : `auth.service`, `track.service`, `auth.interceptor`, `auth.guard`, `tracks-page`. Vérifiés en cassant volontairement le code. **Extension backend** : `backend/test/contract.test.js` (6 tests sans MongoDB ; secret JWT aléatoire). Seul ajout dans `backend/`, décidé par Claude parce que le sujet l'invite explicitement et que ni les routes ni le contrat ne changent. Pagination et piste d'un autre utilisateur non automatisés (demandent MongoDB).
+- **Finitions** : `public/favicon.svg` (supprime le 404 `favicon.ico` de la console), largeur minimale du bouton « Envoyer ».
+- **Livrables** : captures dans [`captures/TP3/`](captures/TP3/) (upload avec progression, suppression, suppression 404), [`RAPPORT_TESTS_TP3.md`](RAPPORT_TESTS_TP3.md), section TP3 de `RAPPORT_IA_MODELE.md` (explications écrites + réponses aux 6 questions de restitution orale).
 
 ## 4. Ce qu'il reste à faire
 
 - [ ] **Menu burger mobile** de la navbar (mis de côté volontairement par Aziz, TP1).
-- [ ] **TP3** (`SUJET_ETUDIANT_TP3.md`) pas commencé.
-- [ ] **Commit et push du TP2** : tout le travail du TP2 (Mission 2, Mission 3, améliorations, fix paginator) n'est **pas encore commité**. Le dernier commit (`c774c9f`) ne couvre que le TP1. **Ne committer / pousser que quand Aziz le demande.**
+- [ ] **Commit et push du TP3 et du mode sombre** : rien n'est commité depuis `aa0bbcf` (TP2). `demo_navigation.mp4` et `.vscode/` ne sont pas suivis : demander à Aziz s'ils doivent l'être. **Ne committer / pousser que quand Aziz le demande.**
 - [ ] Décider si `intrus.checkpoint@example.com` (compte de test du checkpoint Network) doit être supprimé depuis Atlas — aucune urgence.
 
 ## 5. Comment continuer

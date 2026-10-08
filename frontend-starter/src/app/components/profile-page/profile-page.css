@@ -48,7 +48,7 @@
 .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1.25rem; }
 .panel {
   padding: 1.75rem;
-  background: white;
+  background: var(--surface);
   border-radius: 1.25rem;
   box-shadow: 0 14px 34px #0a1f1a14, 0 0 0 1px #0a1f1a0d;
   animation: rise 0.4s ease-out 0.08s both;
@@ -61,7 +61,7 @@
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.03em;
-  color: var(--tolex);
+  color: var(--ink);
 }
 .big-number span { font-size: 1.1rem; font-weight: 600; letter-spacing: 0; color: var(--muted); }
 .muted { margin: 0.8rem 0 0; color: var(--muted); line-height: 1.45; }
@@ -72,9 +72,9 @@
   margin-top: 1.25rem;
   padding: 0.6rem 1rem;
   font-weight: 600;
-  color: var(--tolex);
+  color: var(--ink);
   text-decoration: none;
-  border: 1.5px solid #cfdcd7;
+  border: 1.5px solid var(--line-strong);
   border-radius: 999px;
   transition: border-color 0.15s ease, background 0.15s ease;
 }

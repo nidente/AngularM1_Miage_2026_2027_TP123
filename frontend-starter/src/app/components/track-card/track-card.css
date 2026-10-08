@@ -6,7 +6,7 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  background: white;
+  background: var(--surface);
   border-radius: 1.125rem;
   box-shadow: 0 10px 26px #0a1f1a14, 0 0 0 1px #0a1f1a0d;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -59,7 +59,7 @@
   color: var(--tolex);
   background: radial-gradient(circle at 35% 30%, var(--brass-light), var(--brass) 70%);
   border-radius: 50%;
-  box-shadow: 0 0 0 4px white, 0 8px 16px #0a1f1a40;
+  box-shadow: 0 0 0 4px var(--surface), 0 8px 16px #0a1f1a40;
   transition: transform 0.15s ease;
 }
 .play:hover:not(:disabled) { background: radial-gradient(circle at 35% 30%, #f6d98f, var(--brass-light) 70%); transform: scale(1.06); }

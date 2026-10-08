@@ -70,3 +70,22 @@ export function audioPlaybackErrorMessage(status: number | undefined): string {
       return 'La lecture a échoué, réessayez.';
   }
 }
+
+/**
+ * Traduit une erreur de suppression (DELETE /api/tracks/:id). Le backend
+ * répond 404 aussi bien pour une piste déjà supprimée que pour la piste d'un
+ * autre utilisateur : il ne révèle pas qu'une piste étrangère existe. Le
+ * message ne peut donc pas distinguer les deux cas.
+ */
+export function deleteErrorMessage(status: number | undefined): string {
+  switch (status) {
+    case 404:
+      return "Cette piste n'existe plus ou ne vous appartient pas. La liste a été mise à jour.";
+    case 401:
+      return 'Votre session a expiré, reconnectez-vous.';
+    case 0:
+      return 'Le serveur est injoignable : vérifiez que le backend est lancé.';
+    default:
+      return 'La suppression a échoué, réessayez.';
+  }
+}

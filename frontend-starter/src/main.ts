@@ -1,5 +1,5 @@
 import { bootstrapApplication } from "@angular/platform-browser";
-import { provideHttpClient, withInterceptors } from "@angular/common/http";
+import { provideHttpClient, withInterceptors, withXhr } from "@angular/common/http";
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { LOCALE_ID } from '@angular/core';
@@ -19,6 +19,9 @@ bootstrapApplication(AppComponent, {
     // Libellés du paginator Angular Material en français.
     { provide: MatPaginatorIntl, useClass: FrenchPaginatorIntl },
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    // withXhr() : depuis Angular 22 le backend par défaut est fetch(), qui ne
+    // remonte pas la progression d'un envoi. XMLHttpRequest, lui, expose
+    // xhr.upload.onprogress, nécessaire à la barre de progression de l'import.
+    provideHttpClient(withXhr(), withInterceptors([authInterceptor])),
   ],
 }).catch(console.error);

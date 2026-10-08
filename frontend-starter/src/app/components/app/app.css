@@ -139,6 +139,30 @@ nav { display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; }
 .cta:hover { transform: translateY(-1px); }
 .cta:hover { background: var(--brass-light); }
 
+/* Interrupteur clair/sombre : même famille que le bouton avatar. */
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  color: var(--brass-light);
+  background: #ffffff0f;
+  border: 1px solid #ffffff1f;
+  border-radius: 50%;
+  transition: background 0.15s ease, transform 0.3s ease;
+}
+.theme-toggle:hover { background: #ffffff1f; transform: rotate(-15deg); }
+.theme-toggle svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* Menu du compte */
 .user-menu { position: relative; margin-left: 0.5rem; }
 .avatar-btn {
@@ -178,7 +202,7 @@ nav { display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; }
   padding: 0.4rem;
   color: var(--ink);
   text-shadow: none;
-  background: #ffffffe6;
+  background: var(--menu-bg);
   border-radius: 0.875rem;
   box-shadow: 0 12px 32px #0a1f1a2e, 0 0 0 1px #0a1f1a0f;
   backdrop-filter: blur(16px);
